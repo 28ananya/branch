@@ -6,15 +6,18 @@ const AgentDashboard = () => {
   const [response, setResponse] = useState('');
   const [selectedMessage, setSelectedMessage] = useState(null);
 
+  // Get the API URL from environment variables
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
-    // Fetch messages from the deployed backend
-    fetch('https://branch-3.onrender.com/api/messages')
+    // Fetch messages from the backend
+    fetch(`${apiUrl}/messages`)
       .then((res) => res.json())
       .then((data) => setMessages(data));
-  }, []);
+  }, [apiUrl]);
 
   const handleRespond = async (id) => {
-    const res = await fetch(`https://branch-3.onrender.com/api/messages/${id}/respond`, {
+    const res = await fetch(`${apiUrl}/messages/${id}/respond`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

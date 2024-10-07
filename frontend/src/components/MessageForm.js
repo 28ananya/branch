@@ -11,8 +11,10 @@ const MessageForm = () => {
     setStatus('');
 
     try {
-      // Use the deployed backend URL instead of localhost
-      const res = await fetch('https://branch-3.onrender.com/api/messages', {
+      // Use environment variable for the backend URL
+      const apiUrl = process.env.REACT_APP_API_URL;
+      
+      const res = await fetch(`${apiUrl}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
