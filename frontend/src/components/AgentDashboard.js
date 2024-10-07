@@ -7,14 +7,14 @@ const AgentDashboard = () => {
   const [selectedMessage, setSelectedMessage] = useState(null);
 
   useEffect(() => {
-    // Fetch messages from the backend
-    fetch('http://localhost:5000/api/messages')
+    // Fetch messages from the deployed backend
+    fetch('https://branch-3.onrender.com/api/messages')
       .then((res) => res.json())
       .then((data) => setMessages(data));
   }, []);
 
   const handleRespond = async (id) => {
-    const res = await fetch(`http://localhost:5000/api/messages/${id}/respond`, {
+    const res = await fetch(`https://branch-3.onrender.com/api/messages/${id}/respond`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
