@@ -6,33 +6,36 @@ const AgentDashboard = () => {
   const [response, setResponse] = useState('');
   const [selectedMessage, setSelectedMessage] = useState(null);
 
-  // Get the API URL from environment variables
-  const apiUrl = process.env.REACT_APP_API_URL;
-
   useEffect(() => {
     // Fetch messages from the backend
-    fetch(`${apiUrl}/messages`)
+    fetch('https://branch-3.onrender.com/api/messages')
       .then((res) => res.json())
       .then((data) => setMessages(data));
-  }, [apiUrl]);
+  }, []);
 
   const handleRespond = async (id) => {
-    const res = await fetch(`${apiUrl}/messages/${id}/respond`, {
+    console.log(`Responding to message with ID: ${id} and response: ${response}`);  // Debugging log
+  
+    // Proceed with the fetch request
+    const res = await fetch(`https://branch-3.onrender.com/api/messages/${id}/respond`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ response }),
     });
+  
     if (res.ok) {
       setMessages(messages.map((msg) => 
         msg.id === id ? { ...msg, status: 'responded', response } : msg
       ));
       setResponse('');
-      setSelectedMessage(null);
+      setSelectedMessage(null);  // Close the response box after responding
+    } else {
+      console.error('Failed to respond to the message.');
     }
   };
-
+  
   return (
     <Box sx={{ maxWidth: '800px', margin: 'auto', padding: '2rem' }}>
       <Typography variant="h4" gutterBottom>Agent Dashboard</Typography>

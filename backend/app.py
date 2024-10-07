@@ -22,6 +22,20 @@ class Message(db.Model):
 with app.app_context():
     db.create_all()
 
+@app.route('/api/messages/<int:id>/respond', methods=['POST'])
+def respond_to_message(id):
+    message = Message.query.get(id)
+    if message:
+        data = request.get_json()
+        if not data or 'response' not in data:
+            return jsonify({'error': 'No response provided'}), 400  # Return an error if no response is provided
+        
+        message.response = data['response']
+        message.status = 'responded'  # Mark the status as 'responded'
+        db.session.commit()
+        return jsonify({'message': 'Response sent!'}), 200
+    return jsonify({'error': 'Message not found'}), 404
+
 # API endpoint to create a new message
 @app.route('/api/messages', methods=['POST'])
 def create_message():
